@@ -1,0 +1,103 @@
+<!-- Botón Regresar a lista -->
+<a routerLink="/" class="btn btn-secondary btn-regresar">← Regresar</a>
+
+<h1>Creación de proyectos</h1>
+
+<div *ngIf="errorEnvio" style="color:#dc2626; background:#fee; padding:15px; border-radius:8px; margin-bottom:15px;">
+  {{ errorEnvio }}
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+  <div class="form-grid">
+
+    <!-- Columna izquierda -->
+    <div class="form-left">
+
+      <div class="form-group">
+        <label for="nombre">Nombre del proyecto</label>
+        <input
+          type="text"
+          id="nombre"
+          formControlName="nombre"
+          (input)="limpiarEntradaNombre($event)"
+          [class.input-error]="errorNombre()">
+        <span class="error-msg">{{ errorNombre() }}</span>
+      </div>
+
+      <div class="form-group">
+        <label for="descripcion">Descripción</label>
+        <textarea
+          id="descripcion"
+          formControlName="descripcion"
+          rows="5"
+          [class.input-error]="errorRequerido('descripcion', 'x')"></textarea>
+        <span class="error-msg">{{ errorRequerido('descripcion', 'La descripción es obligatoria.') }}</span>
+      </div>
+
+    </div>
+
+    <!-- Columna derecha -->
+    <div class="form-right">
+
+      <div class="form-group">
+        <label for="facultad">Facultad</label>
+        <select id="facultad" formControlName="facultad"
+                [class.input-error]="errorRequerido('facultad', 'x')">
+          <option value="">-- Seleccionar --</option>
+          <option value="Ciencias Matemáticas y Físicas">Ciencias Matemáticas y Físicas</option>
+          <option value="Medicina">Medicina</option>
+          <option value="Jurisprudencia">Jurisprudencia</option>
+        </select>
+        <span class="error-msg">{{ errorRequerido('facultad', 'Selecciona una facultad.') }}</span>
+      </div>
+
+      <div class="form-group">
+        <label for="carrera">Carrera</label>
+        <select id="carrera" formControlName="carrera"
+                [class.input-error]="errorRequerido('carrera', 'x')">
+          <option value="">-- Seleccionar --</option>
+          <option value="Software">Software</option>
+          <option value="TIC">TIC</option>
+          <option value="Sistemas">Sistemas</option>
+        </select>
+        <span class="error-msg">{{ errorRequerido('carrera', 'Selecciona una carrera.') }}</span>
+      </div>
+
+      <div class="form-group">
+        <label for="tutor">Tutores disponibles</label>
+        <select id="tutor" formControlName="tutor"
+                [class.input-error]="errorRequerido('tutor', 'x')">
+          <option value="">-- Seleccionar --</option>
+          <option value="Ing. Juan Pérez">Ing. Juan Pérez</option>
+          <option value="Ing. María López">Ing. María López</option>
+        </select>
+        <span class="error-msg">{{ errorRequerido('tutor', 'Selecciona un tutor.') }}</span>
+      </div>
+
+      <div class="form-group">
+        <label for="cupos_max">Cupos disponibles</label>
+        <input
+          type="number"
+          id="cupos_max"
+          formControlName="cupos_max"
+          min="1"
+          max="60"
+          [class.input-error]="errorCupos()">
+        <span class="error-msg">{{ errorCupos() }}</span>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn" [disabled]="enviando">
+      {{ enviando ? 'Guardando...' : 'Guardar' }}
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="confirmarCancelar()">
+      Cancelar
+    </button>
+  </div>
+
+</form>

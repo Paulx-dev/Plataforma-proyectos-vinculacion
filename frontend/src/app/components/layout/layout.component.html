@@ -1,0 +1,33 @@
+<div class="dashboard">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <h2>Hola, Jean Paul</h2>
+
+    <nav class="menu">
+      <!-- routerLinkActive marca el botón activo automáticamente -->
+      <a routerLink="/"            routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        Lista de proyectos
+      </a>
+      <a routerLink="/editor"      routerLinkActive="active">
+        Editor de proyectos
+      </a>
+      <a routerLink="/solicitudes" routerLinkActive="active">
+        Solicitudes
+      </a>
+    </nav>
+
+    <div class="back-button">
+      <a href="#">← Regresar</a>
+    </div>
+
+  </aside>
+
+  <!-- CONTENIDO -->
+  <main class="content">
+    <!-- Aquí Angular dibuja el componente según la URL -->
+    <router-outlet></router-outlet>
+  </main>
+
+</div>
