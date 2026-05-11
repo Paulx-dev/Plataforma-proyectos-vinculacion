@@ -24,15 +24,13 @@
             <div class="proyecto-card" data-carrera="<?= htmlspecialchars($p['carrera']) ?>">
                 <div class="card-top">
                     <strong><?= htmlspecialchars($p['nombre']) ?></strong>
-                    <!-- Eliminación con confirmación -->
                     <button
                         class="btn-eliminar"
                         title="Eliminar"
-                        onclick="confirmarEliminar(<?= $p['id'] ?>, '<?= htmlspecialchars($p['nombre']) ?>')">
+                        onclick="confirmarEliminar(<?= $p['id'] ?>, '<?= htmlspecialchars($p['nombre'], ENT_QUOTES) ?>')">
                         🗑
                     </button>
                 </div>
-                <!-- Abre el modal de edición con los datos de este proyecto -->
                 <button
                     class="btn btn-editar"
                     onclick="abrirEditor(
@@ -52,9 +50,11 @@
 </div>
 
 <!-- ===== MODAL DE EDICIÓN ===== -->
-<!-- ¿Por qué un modal? Permite editar sin salir de la página, mejor UX -->
 <div id="modalEditar" class="modal-overlay" style="display:none;">
     <div class="modal-box">
+
+        <!-- X arriba a la izquierda: cierra el modal completamente -->
+        <button class="modal-cerrar-x" onclick="cerrarModal()">✕</button>
 
         <h2 id="modalTitulo"></h2>
 
@@ -95,7 +95,7 @@
                 <div class="modal-right">
                     <div class="form-group">
                         <label for="editTutor">Tutor</label>
-                        <!-- Bloqueado por defecto, se desbloquea con el botón -->
+                        <!-- Bloqueado por defecto, se desbloquea con Cambiar tutor -->
                         <select id="editTutor" name="tutor" disabled>
                             <option value="Ing. Juan Pérez">Ing. Juan Pérez</option>
                             <option value="Ing. María López">Ing. María López</option>
@@ -109,7 +109,8 @@
 
             <div class="form-actions">
                 <button type="submit" class="btn">Guardar</button>
-                <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
+                <!-- Cancelar abajo: revierte cambios pero deja el modal abierto -->
+                <button type="button" class="btn btn-secondary" onclick="revertirCambios()">Cancelar</button>
             </div>
         </form>
 
@@ -117,28 +118,48 @@
 </div>
 
 <script>
-    // Abre el modal y carga los datos del proyecto seleccionado
-    function abrirEditor(id, nombre, descripcion, tutor, usados, max) {
-        document.getElementById('modalTitulo').textContent    = nombre;
-        document.getElementById('editId').value               = id;
-        document.getElementById('editNombre').value           = nombre;
-        document.getElementById('editDescripcion').value      = descripcion;
-        document.getElementById('statEstudiantes').textContent = usados;
-        document.getElementById('statCupos').textContent      = max - usados;
+    let _originalNombre = '';
+    let _originalDescripcion = '';
+    let _originalTutor = '';
 
-        // Seleccionar el tutor actual en el select
+    function abrirEditor(id, nombre, descripcion, tutor, usados, max) {
+        // Guardamos originales ANTES de cargar en el form
+        _originalNombre = nombre;
+        _originalDescripcion = descripcion;
+        _originalTutor = tutor;
+
+        document.getElementById('modalTitulo').textContent = nombre;
+        document.getElementById('editId').value = id;
+        document.getElementById('editNombre').value = nombre;
+        document.getElementById('editDescripcion').value = descripcion;
+        document.getElementById('statEstudiantes').textContent = usados;
+        document.getElementById('statCupos').textContent = max - usados;
+
         const selectTutor = document.getElementById('editTutor');
-        selectTutor.value    = tutor;
-        selectTutor.disabled = true; // siempre bloqueado al abrir
+        selectTutor.value = tutor;
+        selectTutor.disabled = true;
 
         document.getElementById('modalEditar').style.display = 'flex';
     }
 
+    // X arriba: solo cierra, sin tocar nada
     function cerrarModal() {
         document.getElementById('modalEditar').style.display = 'none';
     }
 
-    // Desbloquea el select de tutor solo si el usuario lo pide explícitamente
+    // Cancelar abajo: revierte campos al estado original, modal queda abierto
+    function revertirCambios() {
+        if (confirm('¿Estás seguro de que quieres cancelar? Se perderán los cambios realizados.')) {
+            document.getElementById('editNombre').value = _originalNombre;
+            document.getElementById('editDescripcion').value = _originalDescripcion;
+
+            const selectTutor = document.getElementById('editTutor');
+            selectTutor.value = _originalTutor;
+            selectTutor.disabled = true;
+        }
+        // Si el usuario dice No, el modal queda abierto con los cambios intactos
+    }
+
     function habilitarTutor() {
         document.getElementById('editTutor').disabled = false;
     }
@@ -151,7 +172,6 @@
         });
     }
 
-    // Confirmación antes de eliminar
     function confirmarEliminar(id, nombre) {
         if (confirm('¿Estás seguro de que quieres eliminar el proyecto "' + nombre + '"?')) {
             window.location.href = '?page=editor&action=delete&id=' + id;

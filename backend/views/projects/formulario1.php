@@ -1,4 +1,6 @@
 <?php require 'views/layouts/header.php'; ?>
+<!-- Regresa directamente a lista de proyectos -->
+<a href="?page=projects" class="btn btn-secondary btn-regresar">← Regresar</a>
 
 <h1>Creación de proyectos</h1>
 
@@ -67,7 +69,7 @@
 
     <div class="form-actions">
         <button type="submit" class="btn">Guardar</button>
-        <button type="button" class="btn btn-secondary" onclick="limpiarFormulario()">Cancelar</button>
+        <button type="button" class="btn btn-secondary" onclick="confirmarCancelar()">Cancelar</button>
     </div>
 
 </form>
@@ -153,10 +155,16 @@
         return valido;
     }
 
-    function limpiarFormulario() {
-        document.getElementById('formProyecto').reset();
-        limpiarErrores();
+    function confirmarCancelar() {
+    if (confirm('¿Estás seguro de que quieres cancelar? Se perderán los datos ingresados.')) {
+        limpiarFormulario();
     }
+}
+
+function limpiarFormulario() {
+    document.getElementById('formProyecto').reset();
+    limpiarErrores();
+}
 </script>
 
 <?php require 'views/layouts/footer.php'; ?>
