@@ -401,6 +401,103 @@
         .btn-warning:hover {
             background-color: #b45309;
         }
+
+        .modal-cerrar-x {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #64748b;
+            line-height: 1;
+        }
+
+        .modal-cerrar-x:hover {
+            color: #dc2626;
+        }
+
+        /* El modal-box necesita position relative para que la X se posicione bien */
+        .modal-box {
+            position: relative;
+        }
+
+        /* SOLICITUDES */
+
+        .solicitudes-lista {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .solicitud-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 15px 20px;
+        }
+
+        .solicitud-procesada {
+            opacity: 0.6;
+        }
+
+        .solicitud-info strong {
+            font-size: 15px;
+        }
+
+        .solicitud-info p {
+            margin: 4px 0 0;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .solicitud-acciones {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-aceptar {
+            background-color: #16a34a;
+        }
+
+        .btn-aceptar:hover {
+            background-color: #15803d;
+        }
+
+        .btn-denegar {
+            background-color: #dc2626;
+        }
+
+        .btn-denegar:hover {
+            background-color: #b91c1c;
+        }
+
+        .badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .badge-aceptado {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .badge-denegado {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .btn-regresar {
+            display: inline-block;
+            margin-bottom: 15px;
+        }
     </style>
 
 </head>
@@ -418,7 +515,7 @@
             <div class="menu">
                 <a href="?page=projects">Lista de proyectos</a>
                 <a href="?page=editor">Editor de proyectos</a>
-                <a href="#">Solicitudes</a>
+                <a href="?page=solicitudes">Solicitudes</a>
             </div>
             <div class="back-button">
                 <a href="#">
