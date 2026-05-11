@@ -1,0 +1,44 @@
+<h1>Lista de Proyectos</h1>
+
+<!-- Botón que navega al formulario de creación -->
+<a routerLink="/nuevo" class="btn">Nuevo Proyecto</a>
+
+<!-- Mensaje de error si falla la conexión a PHP -->
+<div *ngIf="error" style="color:#dc2626; background:#fee; padding:15px; border-radius:8px; margin-bottom:15px;">
+  {{ error }}
+</div>
+
+<!-- Indicador de carga -->
+<div *ngIf="cargando" style="color:#888; padding:20px;">
+  Cargando proyectos...
+</div>
+
+<table *ngIf="!cargando && !error">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Proyecto</th>
+      <th>Descripción</th>
+      <th>Tutor</th>
+      <th>Facultad</th>
+      <th>Carrera</th>
+      <th>Cupos</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngIf="proyectos.length === 0">
+      <td colspan="7" style="text-align:center; color:#888;">
+        No hay proyectos registrados aún.
+      </td>
+    </tr>
+    <tr *ngFor="let p of proyectos">
+      <td>{{ p.id }}</td>
+      <td>{{ p.nombre }}</td>
+      <td>{{ p.descripcion }}</td>
+      <td>{{ p.tutor }}</td>
+      <td>{{ p.facultad }}</td>
+      <td>{{ p.carrera }}</td>
+      <td>{{ p.cupos_usados }}/{{ p.cupos_max }}</td>
+    </tr>
+  </tbody>
+</table>

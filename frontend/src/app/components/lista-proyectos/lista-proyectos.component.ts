@@ -1,0 +1,40 @@
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { ProyectoService } from '../../services/proyecto.service';
+import { Proyecto } from '../../models/proyecto.model';
+
+@Component({
+  selector: 'app-lista-proyectos',
+  standalone: true,
+  imports: [CommonModule, RouterLink],
+  templateUrl: './lista-proyectos.component.html',
+  styleUrl: './lista-proyectos.component.css'
+})
+export class ListaProyectosComponent implements OnInit {
+
+  proyectos: Proyecto[] = [];
+  cargando = true;
+  error = '';
+
+  constructor(
+    private proyectoService: ProyectoService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
+    this.proyectoService.getProyectos().subscribe({
+      next: (data) => {
+        this.proyectos = data;
+        this.cargando = false;
+        this.cdr.detectChanges(); // Forzar actualización en modo zoneless
+      },
+      error: (err) => {
+        console.error('Error al cargar proyectos:', err);
+        this.error = 'No se pudo cargar la lista. Verifica que el servidor PHP esté corriendo.';
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+}

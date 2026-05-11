@@ -1,0 +1,3 @@
+﻿# Datos locales del backend (se regeneran solos)
+backend/data_proyectos.json
+backend/data_solicitudes.json

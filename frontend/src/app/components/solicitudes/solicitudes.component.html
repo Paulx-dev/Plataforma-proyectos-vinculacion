@@ -1,0 +1,56 @@
+<h1>Solicitudes de cupos</h1>
+
+<a (click)="resetearSolicitudes()"
+   style="font-size:12px; color:#94a3b8; text-decoration:none; cursor:pointer; display:inline-block; margin-bottom:15px;">
+  ↺ Resetear solicitudes (solo desarrollo)
+</a>
+
+<div *ngIf="cargando" style="color:#888;">Cargando solicitudes...</div>
+
+<div class="solicitudes-lista" *ngIf="!cargando">
+
+  <!-- SECCIÓN: PENDIENTES -->
+  <p *ngIf="pendientes.length === 0" style="color:#888;">
+    No hay solicitudes pendientes.
+  </p>
+
+  <div class="solicitud-card" *ngFor="let s of pendientes">
+    <div class="solicitud-info">
+      <strong>{{ s.estudiante }}</strong>
+      <p>
+        El estudiante <strong>{{ s.estudiante }}</strong>
+        solicitó entrar al proyecto
+        <strong>{{ s.nombre_proyecto }}</strong>
+      </p>
+    </div>
+    <div class="solicitud-acciones">
+      <button class="btn btn-aceptar" (click)="confirmarAccion('aceptar', s)">Aceptar</button>
+      <button class="btn btn-denegar" (click)="confirmarAccion('denegar', s)">Denegar</button>
+    </div>
+  </div>
+
+  <!-- SECCIÓN: PROCESADAS -->
+  <h2 *ngIf="procesadas.length > 0"
+      style="margin-top:30px; font-size:16px; color:#64748b;">
+    Solicitudes procesadas
+  </h2>
+
+  <div class="solicitud-card solicitud-procesada" *ngFor="let s of procesadas">
+    <div class="solicitud-info">
+      <strong>{{ s.estudiante }}</strong>
+      <p>
+        El estudiante <strong>{{ s.estudiante }}</strong>
+        solicitó entrar al proyecto
+        <strong>{{ s.nombre_proyecto }}</strong>
+      </p>
+    </div>
+    <div class="solicitud-acciones">
+      <span class="badge"
+            [class.badge-aceptado]="s.estado === 'aceptado'"
+            [class.badge-denegado]="s.estado === 'denegado'">
+        {{ s.estado === 'aceptado' ? '✓ Aceptado' : '✗ Denegado' }}
+      </span>
+    </div>
+  </div>
+
+</div>
